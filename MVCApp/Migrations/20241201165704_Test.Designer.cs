@@ -4,6 +4,7 @@ using DbAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCApp.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20241201165704_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,13 +252,13 @@ namespace MVCApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f07b7e61-ee42-42a9-a464-0551f29e46ca"),
+                            Id = new Guid("fda632fe-fb2f-4345-9d5d-49b64e9044c0"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("c5d6a3b3-d897-42c3-bcfe-1165628c69d7"),
+                            Id = new Guid("fc13c27b-093a-414b-9238-e9bc08370cfc"),
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -345,7 +348,7 @@ namespace MVCApp.Migrations
                         .IsRequired();
 
                     b.HasOne("Entities.CarStatus", "Status")
-                        .WithMany("Repairs")
+                        .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -358,11 +361,6 @@ namespace MVCApp.Migrations
                 });
 
             modelBuilder.Entity("Entities.Car", b =>
-                {
-                    b.Navigation("Repairs");
-                });
-
-            modelBuilder.Entity("Entities.CarStatus", b =>
                 {
                     b.Navigation("Repairs");
                 });

@@ -2,7 +2,7 @@
 
 namespace Entities
 {
-    public class Owner : EntityBase
+    public class Owner : EntityBase, IEntityBase
     {
         public string DriverLicenseNumber { get; set; } = null!;
 

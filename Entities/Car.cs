@@ -2,7 +2,7 @@
 
 namespace Entities
 {
-    public class Car : EntityBase
+    public class Car : EntityBase, IEntityBase
     {
         public string LicensePlate { get; set; }
 
@@ -24,5 +24,6 @@ namespace Entities
         public Guid? OwnerId { get; set; }
 
         public Owner? Owner { get; set; }
+        public virtual ICollection<Repair> Repairs { get; set; } = new List<Repair>();
     }
 }

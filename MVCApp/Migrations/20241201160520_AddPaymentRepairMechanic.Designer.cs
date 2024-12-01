@@ -4,6 +4,7 @@ using DbAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCApp.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20241201160520_AddPaymentRepairMechanic")]
+    partial class AddPaymentRepairMechanic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,6 +169,41 @@ namespace MVCApp.Migrations
                     b.ToTable("Owners");
                 });
 
+            modelBuilder.Entity("Entities.Repair", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<Guid>("CarId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MechanicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("RepairDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("WorkDescription")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("MechanicId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("Repairs");
+                });
+
             modelBuilder.Entity("Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -249,13 +287,13 @@ namespace MVCApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f07b7e61-ee42-42a9-a464-0551f29e46ca"),
+                            Id = new Guid("a6ce952a-841b-4204-8d48-15fc2eaa5700"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("c5d6a3b3-d897-42c3-bcfe-1165628c69d7"),
+                            Id = new Guid("6a93944f-465c-4a1c-ba6c-3a0c2c102b6a"),
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -274,41 +312,6 @@ namespace MVCApp.Migrations
                     b.ToTable("IdentityUserRole<Guid>");
                 });
 
-            modelBuilder.Entity("Repair", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("NEWSEQUENTIALID()");
-
-                    b.Property<Guid>("CarId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MechanicId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("RepairDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("StatusId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("WorkDescription")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("MechanicId");
-
-                    b.HasIndex("StatusId");
-
-                    b.ToTable("Repairs");
-                });
-
             modelBuilder.Entity("Entities.Car", b =>
                 {
                     b.HasOne("Entities.Owner", "Owner")
@@ -321,7 +324,7 @@ namespace MVCApp.Migrations
 
             modelBuilder.Entity("Entities.Entities.Payment", b =>
                 {
-                    b.HasOne("Repair", "Repair")
+                    b.HasOne("Entities.Repair", "Repair")
                         .WithMany()
                         .HasForeignKey("RepairId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -330,7 +333,7 @@ namespace MVCApp.Migrations
                     b.Navigation("Repair");
                 });
 
-            modelBuilder.Entity("Repair", b =>
+            modelBuilder.Entity("Entities.Repair", b =>
                 {
                     b.HasOne("Entities.Car", "Car")
                         .WithMany("Repairs")
@@ -345,9 +348,9 @@ namespace MVCApp.Migrations
                         .IsRequired();
 
                     b.HasOne("Entities.CarStatus", "Status")
-                        .WithMany("Repairs")
+                        .WithMany()
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -358,11 +361,6 @@ namespace MVCApp.Migrations
                 });
 
             modelBuilder.Entity("Entities.Car", b =>
-                {
-                    b.Navigation("Repairs");
-                });
-
-            modelBuilder.Entity("Entities.CarStatus", b =>
                 {
                     b.Navigation("Repairs");
                 });
