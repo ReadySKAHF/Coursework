@@ -20,6 +20,11 @@ namespace DbAccess.Configure
                 .Property(c => c.StatusName)
                 .IsRequired();
 
+            builder
+                .HasMany(c => c.Repairs)
+                .WithOne(r => r.Status)
+                .HasForeignKey(r => r.StatusId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

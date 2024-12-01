@@ -249,13 +249,13 @@ namespace MVCApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f07b7e61-ee42-42a9-a464-0551f29e46ca"),
+                            Id = new Guid("269810e9-4062-4f87-961f-c57a08cd3fa7"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("c5d6a3b3-d897-42c3-bcfe-1165628c69d7"),
+                            Id = new Guid("774044b9-cc0e-467e-acad-706e54b76472"),
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -341,7 +341,7 @@ namespace MVCApp.Migrations
                     b.HasOne("Entities.Mechanic", "Mechanic")
                         .WithMany("Repairs")
                         .HasForeignKey("MechanicId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.CarStatus", "Status")

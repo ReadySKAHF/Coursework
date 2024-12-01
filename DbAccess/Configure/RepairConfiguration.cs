@@ -35,7 +35,7 @@ namespace DbAccess.Configure
                 .HasOne(r => r.Mechanic)
                 .WithMany(m => m.Repairs)
                 .HasForeignKey(r => r.MechanicId)
-                .OnDelete(DeleteBehavior.Restrict);  // Или используйте Restrict в случае проблем
+                .OnDelete(DeleteBehavior.Cascade);  // Или используйте Restrict в случае проблем
 
             builder
                 .HasOne(r => r.Status)

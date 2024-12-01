@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCApp.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20241201164654_RepairConfigFix")]
-    partial class RepairConfigFix
+    [Migration("20241201172153_AddTables")]
+    partial class AddTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -252,13 +252,13 @@ namespace MVCApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("01b72cdf-b484-4e82-819f-c75ad385f6db"),
+                            Id = new Guid("269810e9-4062-4f87-961f-c57a08cd3fa7"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("47df07d8-09ec-42f5-a76f-2faad680d059"),
+                            Id = new Guid("774044b9-cc0e-467e-acad-706e54b76472"),
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -344,11 +344,11 @@ namespace MVCApp.Migrations
                     b.HasOne("Entities.Mechanic", "Mechanic")
                         .WithMany("Repairs")
                         .HasForeignKey("MechanicId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.CarStatus", "Status")
-                        .WithMany()
+                        .WithMany("Repairs")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -361,6 +361,11 @@ namespace MVCApp.Migrations
                 });
 
             modelBuilder.Entity("Entities.Car", b =>
+                {
+                    b.Navigation("Repairs");
+                });
+
+            modelBuilder.Entity("Entities.CarStatus", b =>
                 {
                     b.Navigation("Repairs");
                 });
